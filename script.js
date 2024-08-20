@@ -1,13 +1,13 @@
-
 document.addEventListener('DOMContentLoaded', () => {
     const periodicTable = document.getElementById('periodic-table');
-    const elementInfo = document.getElementById('element-info');
-    const elementName = document.getElementById('element-name');
-    const elementSymbol = document.getElementById('element-symbol');
-    const elementNumber = document.getElementById('element-number');
-    const elementMass = document.getElementById('element-mass');
-    const elementCategory = document.getElementById('element-category');
     const search = document.getElementById('search');
+    const modal = document.getElementById('modal');
+    const closeModal = document.querySelector('.close');
+    const modalElementName = document.getElementById('modal-element-name');
+    const modalElementSymbol = document.getElementById('modal-element-symbol');
+    const modalElementNumber = document.getElementById('modal-element-number');
+    const modalElementMass = document.getElementById('modal-element-mass');
+    const modalElementCategory = document.getElementById('modal-element-category');
 
     const elements = [
         {symbol: 'H', name: 'Hydrogen', number: 1, mass: 1.008, category: 'nonmetal', column: 1, row: 1},
@@ -31,7 +31,11 @@ document.addEventListener('DOMContentLoaded', () => {
             <span class="symbol">${element.symbol}</span>
             <span class="number">${element.number}</span>
         `;
+
         elementDiv.addEventListener('click', () => showElementInfo(element));
+        elementDiv.addEventListener('mouseover', () => highlightGroup(element.category));
+        elementDiv.addEventListener('mouseout', () => removeHighlightGroup(element.category));
+
         periodicTable.appendChild(elementDiv);
     });
 
@@ -39,21 +43,41 @@ document.addEventListener('DOMContentLoaded', () => {
         const query = search.value.toLowerCase();
         document.querySelectorAll('.element').forEach(el => {
             const name = el.querySelector('.symbol').textContent.toLowerCase();
-            const symbol = el.querySelector('.symbol').textContent.toLowerCase();
-            el.style.display = name.includes(query) || symbol.includes(query) ? 'flex' : 'none';
+            const number = el.querySelector('.number').textContent;
+            const category = el.classList[1].toLowerCase();
+            el.style.display = name.includes(query) || number.includes(query) || category.includes(query) ? 'flex' : 'none';
         });
     });
 
-    function showElementInfo(element) {
-        elementName.textContent = element.name;
-        elementSymbol.textContent = `Symbol: ${element.symbol}`;
-        elementNumber.textContent = `Atomic Number: ${element.number}`;
-        elementMass.textContent = `Atomic Mass: ${element.mass}`;
-        elementCategory.textContent = `Category: ${element.category.replace('-', ' ')}`;
-        
-        elementInfo.style.display = 'block';
+    closeModal.addEventListener('click', () => {
+        modal.style.display = 'none';
+    });
 
-        document.querySelectorAll('.element').forEach(el => el.classList.remove('selected'));
-        event.currentTarget.classList.add('selected');
+    window.addEventListener('click', (event) => {
+        if (event.target === modal) {
+            modal.style.display = 'none';
+        }
+    });
+
+    function showElementInfo(element) {
+        modalElementName.textContent = element.name;
+        modalElementSymbol.textContent = `Symbol: ${element.symbol}`;
+        modalElementNumber.textContent = `Atomic Number: ${element.number}`;
+        modalElementMass.textContent = `Atomic Mass: ${element.mass}`;
+        modalElementCategory.textContent = `Category: ${element.category.replace('-', ' ')}`;
+
+        modal.style.display = 'block';
+    }
+
+    function highlightGroup(category) {
+        document.querySelectorAll(`.${category}`).forEach(el => {
+            el.classList.add('element-group-hover');
+        });
+    }
+
+    function removeHighlightGroup(category) {
+        document.querySelectorAll(`.${category}`).forEach(el => {
+            el.classList.remove('element-group-hover');
+        });
     }
 });
