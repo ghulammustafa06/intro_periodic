@@ -42,3 +42,28 @@ h1 {
 .number {
     font-size: 0.8em;
 }
+
+#element-info {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+#element-info h2 {
+    margin-top: 0;
+    font-size: 1.5em;
+    color: #4c7faf;
+}
+
+#element-info p {
+    margin: 0;
+    font-size: 1.1em;
+    color: #333;
+}
+
+#element-info img {
+    width: 100%;
+    border-radius: 5px;
+    margin-top: 10px;
+}   
