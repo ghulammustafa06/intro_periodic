@@ -1,3 +1,4 @@
+
 document.addEventListener('DOMContentLoaded', () => {
     const periodicTable = document.getElementById('periodic-table');
     const elementInfo = document.getElementById('element-info');
@@ -6,6 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const elementNumber = document.getElementById('element-number');
     const elementMass = document.getElementById('element-mass');
     const elementCategory = document.getElementById('element-category');
+    const search = document.getElementById('search');
 
     const elements = [
         {symbol: 'H', name: 'Hydrogen', number: 1, mass: 1.008, category: 'nonmetal', column: 1, row: 1},
@@ -31,6 +33,15 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
         elementDiv.addEventListener('click', () => showElementInfo(element));
         periodicTable.appendChild(elementDiv);
+    });
+
+    search.addEventListener('input', () => {
+        const query = search.value.toLowerCase();
+        document.querySelectorAll('.element').forEach(el => {
+            const name = el.querySelector('.symbol').textContent.toLowerCase();
+            const symbol = el.querySelector('.symbol').textContent.toLowerCase();
+            el.style.display = name.includes(query) || symbol.includes(query) ? 'flex' : 'none';
+        });
     });
 
     function showElementInfo(element) {

@@ -8,15 +8,20 @@
 </head>
 <body>
     <h1>Interactive Periodic Table</h1>
-    <input type="text" id="search" placeholder="Search by name or symbol...">
+    <input type="text" id="search" placeholder="Search by name, symbol, or number...">
     <div id="periodic-table"></div>
-    <div id="element-info">
-        <h2 id="element-name"></h2>
-        <p id="element-symbol"></p>
-        <p id="element-number"></p>
-        <p id="element-mass"></p>
-        <p id="element-category"></p>
+
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 id="modal-element-name"></h2>
+            <p id="modal-element-symbol"></p>
+            <p id="modal-element-number"></p>
+            <p id="modal-element-mass"></p>
+            <p id="modal-element-category"></p>
+        </div>
     </div>
+
     <script src="script.js"></script>
 </body>
 </html>
