@@ -17,9 +17,62 @@ document.addEventListener('DOMContentLoaded', () => {
     const resetButton = document.getElementById('reset-button');
     const filterSelect = document.getElementById('filter-category');
     const searchInput = document.getElementById('search-element');
+
+    const quizIcon = document.getElementById('quiz-icon');
+    const quizOptions = document.getElementById('quiz-options');
+    const questionElement = document.getElementById('question');
+    const choicesElement = document.getElementById('choices');
+    const nextQuestionButton = document.getElementById('next-question');
+
+    const quizQuestions = [
+        { question: 'What is the atomic number of Hydrogen?', choices: ['1', '2', '3', '4'], correctAnswer: '1' },
+        { question: 'Which element is a noble gas?', choices: ['Oxygen', 'Nitrogen', 'Helium', 'Carbon'], correctAnswer: 'Helium' }
+    ];
+
     let score = 0;
     let currentElement = null;
     let elements = [];
+    let currentQuestionIndex = 0;
+
+    quizIcon.addEventListener('click', () => {
+        quizOptions.classList.toggle('hidden');
+        showQuestion();
+    });
+
+    nextQuestionButton.addEventListener('click', () => {
+        currentQuestionIndex++;
+        if (currentQuestionIndex < quizQuestions.length) {
+            showQuestion();
+        } else {
+            alert('Quiz Completed!');
+            quizOptions.classList.add('hidden');
+            currentQuestionIndex = 0;
+        }
+    });
+
+    function showQuestion() {
+        const currentQuestion = quizQuestions[currentQuestionIndex];
+        questionElement.textContent = currentQuestion.question;
+        choicesElement.innerHTML = '';
+
+        currentQuestion.choices.forEach(choice => {
+            const button = document.createElement('button');
+            button.textContent = choice;
+            button.addEventListener('click', () => checkAnswer(choice, currentQuestion.correctAnswer));
+            choicesElement.appendChild(button);
+        });
+
+        nextQuestionButton.classList.add('hidden');
+    }
+
+    function checkAnswer(selected, correct) {
+        if (selected === correct) {
+            alert('Correct!');
+        } else {
+            alert('Incorrect!');
+        }
+        nextQuestionButton.classList.remove('hidden');
+    }
 
     fetch('elements.json')
         .then(response => response.json())
@@ -74,13 +127,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function handleDragStart(event) {
-        draggedElement = event.target;
+        const draggedElement = event.target;
         event.target.classList.add('dragging');
     }
 
     function handleDragEnd(event) {
         event.target.classList.remove('dragging');
-        draggedElement = null;
     }
 
     function generateQuiz(elements) {
@@ -125,6 +177,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function highlightElementsBySearch() {
         const query = searchInput.value.toLowerCase();
         const elementDivs = periodicTable.getElementsByClassName('element');
+        
         Array.from(elementDivs).forEach(div => {
             const name = div.title.toLowerCase();
             if (name.includes(query)) {
@@ -133,5 +186,35 @@ document.addEventListener('DOMContentLoaded', () => {
                 div.classList.remove('highlight');
             }
         });
+    }
+
+    document.querySelectorAll('.quiz-option').forEach(option => {
+        option.addEventListener('click', () => {
+            const isCorrect = option.dataset.correct === 'true';
+            checkAnswer(option, isCorrect);
+        });
+    });
+
+    document.querySelectorAll('.element').forEach(element => {
+        element.setAttribute('tabindex', '0');
+        element.setAttribute('role', 'button');
+        element.setAttribute('aria-label', `Element ${element.querySelector('.symbol').textContent}`);
+        
+        element.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter' || event.key === ' ') {
+                element.click();
+            }
+        });
+    });
+
+    function checkAnswer(element, correct) {
+        if (correct) {
+            element.classList.add('correct-answer');
+        } else {
+            element.classList.add('wrong-answer');
+        }
+        setTimeout(() => {
+            element.classList.remove('correct-answer', 'wrong-answer');
+        }, 1000);
     }
 });
