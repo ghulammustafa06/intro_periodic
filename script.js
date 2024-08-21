@@ -13,48 +13,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const resetButton = document.getElementById('reset-button');
     const quizQuestion = document.getElementById('quiz-question');
     const quizOptions = document.getElementById('quiz-options');
+    const timerElement = document.getElementById('timer');
+    const leaderboardList = document.getElementById('leaderboard-list');
     let score = 0;
-    let draggedElement = null;
 });
 
     let quizElement = null;
+    let timeLeft = 30; 
+    let timerInterval;
 
     const correctSound = new Audio('correct.mp3');
     const incorrectSound = new Audio('incorrect.mp3');
 
-    fetch('elements.json')
-        .then(response => response.json())
-        .then(elements => {
-            elements.forEach(element => {
-                const elementDiv = createElementDiv(element);
-                periodicTable.appendChild(elementDiv);
-            });
-        });
-
-    closeModalButton.addEventListener('click', closeModal);
-    window.addEventListener('click', (event) => {
-        if (event.target === modal) closeModal();
-    });
-
-    function createElementDiv(element) {
-        const elementDiv = document.createElement('div');
-        elementDiv.className = `element ${element.category} draggable`;
-        elementDiv.draggable = true;
-        elementDiv.style.gridColumn = element.column;
-        elementDiv.style.gridRow = element.row;
-        elementDiv.innerHTML = `
-            <span class="symbol">${element.symbol}</span>
-            <span class="number">${element.number}</span>
-        `;
-        elementDiv.title = `${element.name} (${element.number})`;
-
-        elementDiv.addEventListener('click', () => showElementInfo(element));
-        elementDiv.addEventListener('dragstart', handleDragStart);
-        elementDiv.addEventListener('dragend', handleDragEnd);
-
-        return elementDiv;
-    }
-
+   
     function showElementInfo(element) {
         modalContent.name.textContent = element.name;
         modalContent.symbol.textContent = `Symbol: ${element.symbol}`;
@@ -106,6 +77,68 @@ document.addEventListener('DOMContentLoaded', () => {
         el2.style.gridColumn = tempColumn;
         el2.style.gridRow = tempRow;
     }
+    function checkAnswer(selectedElement) {
+        stopTimer();
+        if (selectedElement === quizElement) {
+            correctSound.play();
+            score += 10;
+            scoreElement.textContent = `Score: ${score}`;
+            document.querySelectorAll('.quiz-option').forEach(option => {
+                if (option.textContent === quizElement.name) {
+                    option.classList.add('correct');
+                }
+            });
+            setTimeout(() => nextQuiz(), 1000);
+        } else {
+            incorrectSound.play();
+            document.querySelectorAll('.quiz-option').forEach(option => {
+                if (option.textContent === quizElement.name) {
+                    option.classList.add('correct');
+                } else {
+                    option.classList.add('incorrect');
+                }
+            });
+            setTimeout(() => nextQuiz(), 1000);
+        }
+    }
+
+    function nextQuiz() {
+        quizOptions.innerHTML = '';
+        startQuiz(elements);
+    }
+
+    function resetTimer() {
+        timeLeft = 30;
+        timerElement.textContent = `Time Left: ${timeLeft} seconds`;
+    }
+
+    function startTimer() {
+        timerInterval = setInterval(() => {
+            timeLeft -= 1;
+            timerElement.textContent = `Time Left: ${timeLeft} seconds`;
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                timeIsUp();
+            }
+        }, 1000);
+    }
+
+    function stopTimer() {
+        clearInterval(timerInterval);
+    }
+
+    function timeIsUp() {
+        incorrectSound.play();
+        document.querySelectorAll('.quiz-option').forEach(option => {
+            if (option.textContent === quizElement.name) {
+                option.classList.add('correct');
+            } else {
+                option.classList.add('incorrect');
+            }
+        });
+        setTimeout(() => nextQuiz(), 1000);
+    }
+
 
     function initializeTable(elements) {
         elements.forEach(element => {
@@ -130,68 +163,6 @@ document.addEventListener('DOMContentLoaded', () => {
             periodicTable.appendChild(elementDiv);
         });
     }
-
-document.addEventListener('DOMContentLoaded', () => {
-    const periodicTable = document.getElementById('periodic-table');
-    const scoreElement = document.getElementById('score');
-    const resetButton = document.getElementById('reset-button');
-    let score = 0;
-
-    fetch('elements.json')
-        .then(response => response.json())
-        .then(elements => {
-            elements.forEach(element => {
-                const elementDiv = createElementDiv(element);
-                periodicTable.appendChild(elementDiv);
-            });
-        });
-
-    function createElementDiv(element) {
-        const elementDiv = document.createElement('div');
-        elementDiv.className = `element ${element.category} draggable element-group`;
-        elementDiv.draggable = true;
-        elementDiv.style.gridColumn = element.column;
-        elementDiv.style.gridRow = element.row;
-        elementDiv.innerHTML = `
-            <span class="symbol">${element.symbol}</span>
-            <span class="number">${element.number}</span>
-        `;
-        elementDiv.title = `${element.name} (${element.number})`;
-
-        elementDiv.addEventListener('click', () => showElementInfo(element));
-        elementDiv.addEventListener('dragstart', handleDragStart);
-        elementDiv.addEventListener('dragend', handleDragEnd);
-
-        elementDiv.addEventListener('mouseover', () => highlightGroup(element.category));
-        elementDiv.addEventListener('mouseout', () => removeGroupHighlight(element.category));
-
-        return elementDiv;
-    }
-
-    function highlightGroup(category) {
-        document.querySelectorAll(`.${category}`).forEach(el => el.classList.add('highlight'));
-    }
-
-    function removeGroupHighlight(category) {
-        document.querySelectorAll(`.${category}`).forEach(el => el.classList.remove('highlight'));
-    }
-
-    function handleDragEnd(event) {
-        score += 10;
-        scoreElement.textContent = `Score: ${score}`;
-    }
-
-    resetButton.addEventListener('click', resetGame);
-
-    function resetGame() {
-        score = 0;
-        scoreElement.textContent = `Score: ${score}`;
-        document.querySelectorAll('.element').forEach(element => {
-            element.style.gridColumn = element.dataset.originalColumn;
-            element.style.gridRow = element.dataset.originalRow;
-        });
-    }
-});
 
 function startQuiz(elements) {
     const randomElement = elements[Math.floor(Math.random() * elements.length)];
