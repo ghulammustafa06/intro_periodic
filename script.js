@@ -9,7 +9,18 @@ document.addEventListener('DOMContentLoaded', () => {
         mass: document.getElementById('modal-element-mass'),
         category: document.getElementById('modal-element-category')
     };
+    const scoreElement = document.getElementById('score');
+    const resetButton = document.getElementById('reset-button');
+    const quizQuestion = document.getElementById('quiz-question');
+    const quizOptions = document.getElementById('quiz-options');
+    let score = 0;
     let draggedElement = null;
+});
+
+    let quizElement = null;
+
+    const correctSound = new Audio('correct.mp3');
+    const incorrectSound = new Audio('incorrect.mp3');
 
     fetch('elements.json')
         .then(response => response.json())
@@ -95,7 +106,30 @@ document.addEventListener('DOMContentLoaded', () => {
         el2.style.gridColumn = tempColumn;
         el2.style.gridRow = tempRow;
     }
-});
+
+    function initializeTable(elements) {
+        elements.forEach(element => {
+            const elementDiv = document.createElement('div');
+            elementDiv.className = `element ${element.category} draggable element-group`;
+            elementDiv.draggable = true;
+            elementDiv.style.gridColumn = element.column;
+            elementDiv.style.gridRow = element.row;
+            elementDiv.innerHTML = `
+                <span class="symbol">${element.symbol}</span>
+                <span class="number">${element.number}</span>
+            `;
+            elementDiv.title = `${element.name} (${element.number})`;
+
+            elementDiv.addEventListener('click', () => showElementInfo(element));
+            elementDiv.addEventListener('dragstart', handleDragStart);
+            elementDiv.addEventListener('dragend', handleDragEnd);
+
+            elementDiv.addEventListener('mouseover', () => highlightGroup(element.category));
+            elementDiv.addEventListener('mouseout', () => removeGroupHighlight(element.category));
+
+            periodicTable.appendChild(elementDiv);
+        });
+    }
 
 document.addEventListener('DOMContentLoaded', () => {
     const periodicTable = document.getElementById('periodic-table');
@@ -159,6 +193,22 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
+function startQuiz(elements) {
+    const randomElement = elements[Math.floor(Math.random() * elements.length)];
+    quizElement = randomElement;
+
+    quizQuestion.textContent = `Which element has the atomic number ${randomElement.number}?`;
+
+    const shuffledElements = elements.sort(() => 0.5 - Math.random());
+    shuffledElements.slice(0, 4).forEach(element => {
+        const option = document.createElement('div');
+        option.className = 'quiz-option';
+        option.textContent = element.name;
+        option.addEventListener('click', () => checkAnswer(element));
+        quizOptions.appendChild(option);
+    });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     const periodicTable = document.getElementById('periodic-table');
     const scoreElement = document.getElementById('score');
@@ -215,3 +265,4 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+
