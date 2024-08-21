@@ -143,8 +143,63 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function handleDragEnd(event) {
-        const target = event.target;
+        score += 10;
+        scoreElement.textContent = `Score: ${score}`;
+    }
 
+    resetButton.addEventListener('click', resetGame);
+
+    function resetGame() {
+        score = 0;
+        scoreElement.textContent = `Score: ${score}`;
+        document.querySelectorAll('.element').forEach(element => {
+            element.style.gridColumn = element.dataset.originalColumn;
+            element.style.gridRow = element.dataset.originalRow;
+        });
+    }
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    const periodicTable = document.getElementById('periodic-table');
+    const scoreElement = document.getElementById('score');
+    const resetButton = document.getElementById('reset-button');
+    let score = 0;
+
+    fetch('elements.json')
+        .then(response => response.json())
+        .then(elements => {
+            elements.forEach(element => {
+                const elementDiv = document.createElement('div');
+                elementDiv.className = `element ${element.category} draggable element-group`;
+                elementDiv.draggable = true;
+                elementDiv.style.gridColumn = element.column;
+                elementDiv.style.gridRow = element.row;
+                elementDiv.innerHTML = `
+                    <span class="symbol">${element.symbol}</span>
+                    <span class="number">${element.number}</span>
+                `;
+                elementDiv.title = `${element.name} (${element.number})`;
+
+                elementDiv.addEventListener('click', () => showElementInfo(element));
+                elementDiv.addEventListener('dragstart', handleDragStart);
+                elementDiv.addEventListener('dragend', handleDragEnd);
+
+                elementDiv.addEventListener('mouseover', () => highlightGroup(element.category));
+                elementDiv.addEventListener('mouseout', () => removeGroupHighlight(element.category));
+
+                periodicTable.appendChild(elementDiv);
+            });
+        });
+
+    function highlightGroup(category) {
+        document.querySelectorAll(`.${category}`).forEach(el => el.classList.add('highlight'));
+    }
+
+    function removeGroupHighlight(category) {
+        document.querySelectorAll(`.${category}`).forEach(el => el.classList.remove('highlight'));
+    }
+
+    function handleDragEnd(event) {
         score += 10;
         scoreElement.textContent = `Score: ${score}`;
     }
