@@ -1,12 +1,19 @@
+* {
+    box-sizing: border-box;
+}
+
+
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 20px;
-    background-color: #f0f0f0;
+    background: linear-gradient(to bottom, #4CAF50, #f0f0f0);
+    color: #333;
 }
 
 h1 {
     text-align: center;
+    color: white;
 }
 
 #periodic-table {
@@ -19,7 +26,6 @@ h1 {
 
 .element {
     aspect-ratio: 1;
-    background-color: #4CAF50;
     color: white;
     display: flex;
     flex-direction: column;
@@ -35,7 +41,6 @@ h1 {
     transform: scale(1.1);
     z-index: 1;
     box-shadow: 0 0 10px rgba(0,0,0,0.3);
-    animation: pulse 1.5s infinite;
 }
 
 .symbol {
@@ -50,79 +55,26 @@ h1 {
     font-size: 0.8em;
 }
 
-#element-info {
-    background-color: white;
-    padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    max-width: 300px;
-    margin: 0 auto;
-    display: none;
-}
-
-.selected {
-    animation: zoom-in 0.5s ease-in-out;
-}
-
-@keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.1); }
-    100% { transform: scale(1); }
-}
-
-@keyframes zoom-in {
-    from { transform: scale(0.8); }
-    to { transform: scale(1); }
-}
-
-.alkali-metal { background-color: #ff9999; }
-.alkaline-earth-metal { background-color: #ffddb3; }
-.transition-metal { background-color: #f6f0bc; }
-.post-transition-metal { background-color: #cccccc; }
-.metalloid { background-color: #b3ffb3; }
-.nonmetal { background-color: #a3d1ff; }
-.halogen { background-color: #ffff9f; }
-.noble-gas { background-color: #c6aeff; }
-.lanthanide { background-color: #ffbfff; }
-.actinide { background-color: #ff99cc; }
-
-@media (max-width: 768px) {
-    #periodic-table {
-        grid-template-columns: repeat(10, 1fr);
-        gap: 1px;
-    }
-    
-    .element {
-        font-size: 1.2vw;
-    }
-}
-
-.modal {
+#modal {
     display: none;
     position: fixed;
-    z-index: 1000;
+    z-index: 100;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
     overflow: auto;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.4);
 }
 
 .modal-content {
-    background-color: #fefefe;
-    margin: 10% auto;
+    background-color: white;
+    margin: 15% auto;
     padding: 20px;
     border: 1px solid #888;
-    border-radius: 8px;
-    width: 60%;
+    width: 80%;
     max-width: 500px;
-    animation: slideIn 0.3s ease-in-out;
-}
-
-@keyframes slideIn {
-    from { transform: translateY(-50px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
+    border-radius: 10px;
 }
 
 .close {
@@ -140,135 +92,43 @@ h1 {
     cursor: pointer;
 }
 
-.modal-element-details {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.modal-element-details h2 {
-    margin: 0;
-    font-size: 1.5em;
-}
-
-.modal-element-details p {
-    margin: 0;
-    font-size: 1em;
-    color: #555;
-}
-
-
-@media (max-width: 768px) {
-    .element {
-        font-size: 0.8rem;
-        padding: 5px;
-    }
-
-    .modal-content {
-        width: 90%;
-    }
-
-    #periodic-table {
-        grid-template-columns: repeat(6, 1fr); 
-    }
-}
-
-@media (max-width: 480px) {
-    .element {
-        font-size: 0.7rem;
-        padding: 4px;
-    }
-
-    #periodic-table {
-        grid-template-columns: repeat(4, 1fr); 
-    }
-}
-
-#score {
-    font-size: 1.5em;
-    text-align: center;
-    margin: 20px 0;
-    color: #333;
-}
-
-
-#score {
-    font-size: 1.5em;
-    text-align: center;
-    margin: 20px 0;
-    color: #333;
-}
-
-#reset-button {
-    display: block;
+#quiz-section {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    max-width: 500px;
     margin: 20px auto;
-    padding: 10px 20px;
-    background-color: #f44336;
+    text-align: center;
+}
+
+#quiz-answer {
+    margin-top: 10px;
+    padding: 8px;
+    width: 80%;
+}
+
+button {
+    background-color: #4CAF50;
     color: white;
+    padding: 10px 20px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    font-size: 1em;
-    transition: background-color 0.3s ease;
 }
 
-#quiz {
-    max-width: 600px;
-    margin: 20px auto;
-    text-align: center;
+button:hover {
+    background-color: #45a049;
 }
 
-#quiz-question {
-    font-size: 1.2em;
-    margin-bottom: 10px;
-}
 
-.quiz-option {
-    display: inline-block;
-    padding: 10px 20px;
-    background-color: #2196F3;
-    color: white;
-    margin: 5px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.correct {
-    background-color: #4CAF50 !important;
-}
-
-.incorrect {
-    background-color: #f44336 !important;
-}
-
-#timer {
-    font-size: 1.2em;
-    color: #f44336;
-    text-align: center;
-    margin: 10px 0;
-}
-
-#leaderboard {
-    max-width: 600px;
-    margin: 20px auto;
-    text-align: center;
-}
-
-#leaderboard h2 {
-    font-size: 1.5em;
-    margin-bottom: 10px;
-}
-
-#leaderboard-list {
-    list-style-type: none;
-    padding: 0;
-}
-
-.leaderboard-item {
-    background-color: #4CAF50;
-    color: white;
-    padding: 10px;
-    margin: 5px 0;
-    border-radius: 5px;
-}
+.alkali-metal { background-color: #ff9999; }
+.alkaline-earth-metal { background-color: #ffddb3; }
+.transition-metal { background-color: #f6f0bc; }
+.post-transition-metal { background-color: #cccccc; }
+.metalloid { background-color: #b3ffb3; }
+.nonmetal { background-color: #a3d1ff; }
+.halogen { background-color: #ffff9f; }
+.noble-gas { background-color: #c6aeff; }
+.lanthanide { background-color: #ffbfff; }
+.actinide { background-color: #ff99cc; }

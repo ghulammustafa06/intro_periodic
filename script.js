@@ -15,7 +15,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const quizOptions = document.getElementById('quiz-options');
     const timerElement = document.getElementById('timer');
     const leaderboardList = document.getElementById('leaderboard-list');
+    const playerNameInput = document.getElementById('player-name');
+    const saveScoreButton = document.getElementById('save-score');
     let score = 0;
+    let quizElement = null;
+    let timeLeft = 30;
+    let timerInterval;
 });
 
     let quizElement = null;
@@ -140,30 +145,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 
-    function initializeTable(elements) {
-        elements.forEach(element => {
-            const elementDiv = document.createElement('div');
-            elementDiv.className = `element ${element.category} draggable element-group`;
-            elementDiv.draggable = true;
-            elementDiv.style.gridColumn = element.column;
-            elementDiv.style.gridRow = element.row;
-            elementDiv.innerHTML = `
-                <span class="symbol">${element.symbol}</span>
-                <span class="number">${element.number}</span>
-            `;
-            elementDiv.title = `${element.name} (${element.number})`;
-
-            elementDiv.addEventListener('click', () => showElementInfo(element));
-            elementDiv.addEventListener('dragstart', handleDragStart);
-            elementDiv.addEventListener('dragend', handleDragEnd);
-
-            elementDiv.addEventListener('mouseover', () => highlightGroup(element.category));
-            elementDiv.addEventListener('mouseout', () => removeGroupHighlight(element.category));
-
-            periodicTable.appendChild(elementDiv);
-        });
-    }
-
 function startQuiz(elements) {
     const randomElement = elements[Math.floor(Math.random() * elements.length)];
     quizElement = randomElement;
@@ -212,18 +193,29 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
 
-    function highlightGroup(category) {
-        document.querySelectorAll(`.${category}`).forEach(el => el.classList.add('highlight'));
-    }
-
-    function removeGroupHighlight(category) {
-        document.querySelectorAll(`.${category}`).forEach(el => el.classList.remove('highlight'));
-    }
-
-    function handleDragEnd(event) {
-        score += 10;
-        scoreElement.textContent = `Score: ${score}`;
-    }
+        function showElementInfo(element) {
+            modalContent.name.textContent = element.name;
+            modalContent.symbol.textContent = `Symbol: ${element.symbol}`;
+            modalContent.number.textContent = `Atomic Number: ${element.number}`;
+            modalContent.mass.textContent = `Atomic Mass: ${element.mass}`;
+            modalContent.category.textContent = `Category: ${element.category.replace('-', ' ')}`;
+            modal.style.display = 'block';
+        }
+    
+        function closeModal() {
+            modal.style.display = 'none';
+        }
+    
+        function handleDragStart(event) {
+            draggedElement = event.target;
+            event.target.classList.add('dragging');
+        }
+    
+        function handleDragEnd(event) {
+            event.target.classList.remove('dragging');
+            draggedElement = null;
+        }
+    
 
     resetButton.addEventListener('click', resetGame);
 
