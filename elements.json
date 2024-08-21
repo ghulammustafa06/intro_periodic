@@ -85,6 +85,26 @@
     {"symbol": "Pu", "name": "Plutonium", "number": 94, "mass": 244.0, "category": "actinide", "column": 8, "row": 9},
     {"symbol": "Am", "name": "Americium", "number": 95, "mass": 243.0, "category": "actinide", "column": 9, "row": 9},
     {"symbol": "Cm", "name": "Curium", "number": 96, "mass": 247.0, "category": "actinide", "column": 10, "row": 9},
-    {"symbol": "Bk", "name": "Berkelium", "number": 97, "mass": 247.0, "category": "actinide", "column": 11, "row": 9}
-   
+    {"symbol": "Bk", "name": "Berkelium", "number": 97, "mass": 247.0, "category": "actinide", "column": 11, "row": 9},
+    {"symbol": "Cf", "name": "Californium", "number": 98, "mass": 251.0, "category": "actinide", "column": 12, "row": 9},
+    {"symbol": "Es", "name": "Einsteinium", "number": 99, "mass": 252.0, "category": "actinide", "column": 13, "row": 9},
+    {"symbol": "Fm", "name": "Fermium", "number": 100, "mass": 257.0, "category": "actinide", "column": 14, "row": 9},
+    {"symbol": "Md", "name": "Mendelevium", "number": 101, "mass": 258.0, "category": "actinide", "column": 15, "row": 9},
+    {"symbol": "No", "name": "Nobelium", "number": 102, "mass": 259.0, "category": "actinide", "column": 16, "row": 9},
+    {"symbol": "Lr", "name": "Lawrencium", "number": 103, "mass": 262.0, "category": "actinide", "column": 17, "row": 9},
+    {"symbol": "Rf", "name": "Rutherfordium", "number": 104, "mass": 267.0, "category": "transition-metal", "column": 4, "row": 7},
+    {"symbol": "Db", "name": "Dubnium", "number": 105, "mass": 270.0, "category": "transition-metal", "column": 5, "row": 7},
+    {"symbol": "Sg", "name": "Seaborgium", "number": 106, "mass": 271.0, "category": "transition-metal", "column": 6, "row": 7},
+    {"symbol": "Bh", "name": "Bohrium", "number": 107, "mass": 270.0, "category": "transition-metal", "column": 7, "row": 7},
+    {"symbol": "Hs", "name": "Hassium", "number": 108, "mass": 277.0, "category": "transition-metal", "column": 8, "row": 7},
+    {"symbol": "Mt", "name": "Meitnerium", "number": 109, "mass": 278.0, "category": "unknown", "column": 9, "row": 7},
+    {"symbol": "Ds", "name": "Darmstadtium", "number": 110, "mass": 281.0, "category": "unknown", "column": 10, "row": 7},
+    {"symbol": "Rg", "name": "Roentgenium", "number": 111, "mass": 282.0, "category": "unknown", "column": 11, "row": 7},
+    {"symbol": "Cn", "name": "Copernicium", "number": 112, "mass": 285.0, "category": "unknown", "column": 12, "row": 7},
+    {"symbol": "Nh", "name": "Nihonium", "number": 113, "mass": 286.0, "category": "unknown", "column": 13, "row": 7},
+    {"symbol": "Fl", "name": "Flerovium", "number": 114, "mass": 289.0, "category": "unknown", "column": 14, "row": 7},
+    {"symbol": "Mc", "name": "Moscovium", "number": 115, "mass": 290.0, "category": "unknown", "column": 15, "row": 7},
+    {"symbol": "Lv", "name": "Livermorium", "number": 116, "mass": 293.0, "category": "unknown", "column": 16, "row": 7},
+    {"symbol": "Ts", "name": "Tennessine", "number": 117, "mass": 294.0, "category": "unknown", "column": 17, "row": 7},
+    {"symbol": "Og", "name": "Oganesson", "number": 118, "mass": 294.0, "category": "unknown", "column": 18, "row": 7}
 ]
